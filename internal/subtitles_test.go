@@ -54,6 +54,8 @@ func TestGetLineType(t *testing.T) {
 		{"This is a dialogue", DIALOGUE},
 	}
 
+	config.IgnoreSubStartingWithChar = "♪"
+
 	for _, tc := range testCases {
 		t.Run(tc.input, func(t *testing.T) {
 			result := getLineType(tc.input)
