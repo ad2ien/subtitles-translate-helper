@@ -4,14 +4,8 @@ A Go tool to translate subtiles using [LibreTranslate](https://github.com/LibreT
 
 ## Prerequisites
 
-- Docker
-
-## todo
-
-- [ ] check without the image in the first place
-- [ ] specify subtitle format
-- [ ] Tidy mode
-- [ ] CI: downloadable last artefact
+- Linux station
+- Docker is installed
 
 ## Build
 
@@ -39,6 +33,8 @@ libreTranslateServicePort: 5021
 libreTranslateImageVersion: "latest"
 ```
 
+`path` are input and output folders
+
 ### Downloading tool
 
 On a Linux host:
@@ -58,3 +54,14 @@ go run cmd/subtranshelper/main.go
 ## Clean volumes
 
 ...
+
+## todo
+
+- [ ] check without the image in the first place
+- [ ] specify subtitle format
+- [ ] Tidy mode
+- [ ] Version
+- [ ] CI:
+  - downloadable last artefact
+  - lint?
+- [ ] Badgess

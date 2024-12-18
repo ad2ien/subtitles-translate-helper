@@ -2,8 +2,13 @@ name: go_ci
 
 on:
   workflow_dispatch:
+  workflow_call:
   push:
     branches: [main]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -21,3 +26,12 @@ jobs:
 
       - name: Build
         run: go build -v -o subtitles-translate-helper ./cmd/subtranshelper
+
+      - name: keep artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: binary
+          path: subtitles-translate-helper
+          if-no-files-found: error
+          retention-days: 1
+          overwrite: true
