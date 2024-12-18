@@ -11,7 +11,7 @@ A Go tool to translate subtiles using [LibreTranslate](https://github.com/LibreT
 - [ ] check without the image in the first place
 - [ ] specify subtitle format
 - [ ] Tidy mode
-- [ ] CI
+- [ ] CI: downloadable last artefact
 
 ## Build
 
