@@ -2,6 +2,8 @@ package internal
 
 import (
 	"context"
+	"io"
+	"os"
 	"os/exec"
 
 	"github.com/docker/docker/api/types/container"
@@ -46,6 +48,8 @@ func runService() {
 
 	stopAndRemoveContainer()
 
+	getImageImage(cli)
+
 	hostBinding := nat.PortBinding{
 		HostPort: config.LibreTranslateServicePort,
 	}
@@ -84,6 +88,31 @@ func runService() {
 	}
 
 	logger.Println("Libretranslate container created and started on port " + config.LibreTranslateServicePort)
+}
+
+func getImageImage(cli *client.Client) {
+
+	images, err := cli.ImageList(context.Background(), image.ListOptions{})
+
+	if err != nil {
+		logger.Panic(err)
+	}
+	for _, image := range images {
+		if len(image.RepoTags) > 0 && image.RepoTags[0] == "libretranslate/libretranslate:"+config.LibreTranslateImageVersion {
+			logger.Println("Libretranslate image already exists")
+			return
+		}
+	}
+	imagesName := "libretranslate/libretranslate:" + config.LibreTranslateImageVersion
+	logger.Println("Pulling Libretranslate image " + imagesName + " ...")
+	reader, err := cli.ImagePull(context.Background(), imagesName, image.PullOptions{})
+
+	if err != nil {
+		logger.Panic(err)
+	}
+	io.Copy(os.Stdout, reader)
+
+	reader.Close()
 }
 
 func stopAndRemoveContainer() {
