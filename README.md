@@ -40,7 +40,7 @@ libreTranslateImageVersion: "latest"
 On a Linux host:
 
 ```sh
-curl https://github.com/ad2ien/subtitles-translate-helper/release ...
+curl -O https://github.com/ad2ien/subtitles-translate-helper/release/download/subtitles-translate-helper
 chmod +x subtitles-translate-helper
 ./subtitles-translate-helper
 ```
@@ -59,7 +59,6 @@ go run cmd/subtranshelper/main.go
 
 - [ ] check without the image in the first place
 - [ ] specify subtitle format
-- [ ] Tidy mode
 - [ ] Version
 - [ ] CI:
   - downloadable last artefact

@@ -5,6 +5,7 @@ import (
 	"os/exec"
 
 	"github.com/docker/docker/api/types/container"
+	"github.com/docker/docker/api/types/image"
 	"github.com/docker/docker/client"
 	"github.com/docker/go-connections/nat"
 )
@@ -26,7 +27,7 @@ func StartTranslatorService() {
 
 func StopTranslatorService() {
 
-	stopContainer()
+	stopAndRemoveContainer()
 }
 
 func isDockerInstalled() bool {
@@ -43,7 +44,7 @@ func runService() {
 		panic(err)
 	}
 
-	stopContainer()
+	stopAndRemoveContainer()
 
 	hostBinding := nat.PortBinding{
 		HostPort: config.LibreTranslateServicePort,
@@ -85,7 +86,7 @@ func runService() {
 	logger.Println("Libretranslate container created and started on port " + config.LibreTranslateServicePort)
 }
 
-func stopContainer() {
+func stopAndRemoveContainer() {
 	cli, err := client.NewClientWithOpts(client.FromEnv)
 	if err != nil {
 		panic(err)
@@ -100,7 +101,6 @@ func stopContainer() {
 	}
 
 	removeContainerIfNeeded(cli)
-
 }
 
 func removeContainerIfNeeded(cli *client.Client) {
@@ -138,4 +138,41 @@ func getServiceContainerID(locClient *client.Client) string {
 		}
 	}
 	return ""
+}
+
+func CleanUp() {
+
+	logger.Println("Cleanup LibreTranslate images and volumes")
+
+	stopAndRemoveContainer()
+
+	cli, err := client.NewClientWithOpts(client.FromEnv)
+	if err != nil {
+		logger.Panic(err)
+	}
+
+	dbVolume, err := cli.VolumeInspect(context.Background(), "lt-db")
+	if err != nil {
+		logger.Println(err)
+	} else {
+		err = cli.VolumeRemove(context.Background(), dbVolume.Name, false)
+		logger.Println("Removed volume lt-db")
+	}
+
+	localVolume, err := cli.VolumeInspect(context.Background(), "lt-local")
+	if err != nil {
+		logger.Println(err)
+	} else {
+		err = cli.VolumeRemove(context.Background(), localVolume.Name, false)
+		logger.Println("Removed volume lt-local")
+	}
+
+	response, err := cli.ImageRemove(context.Background(), "libretranslate/libretranslate:"+config.LibreTranslateImageVersion, image.RemoveOptions{})
+
+	if err != nil {
+		logger.Println(err)
+	}
+
+	logger.Println("Image deleted : ", response)
+
 }

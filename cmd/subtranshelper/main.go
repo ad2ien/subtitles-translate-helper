@@ -9,13 +9,24 @@ var logger = internal.GetLogger()
 
 func main() {
 	configPath := flag.String("config-path", "config.yml", "config file path")
+	cleanup := flag.Bool("cleanup", false, "Only cleanup images and volumes")
 
 	flag.Parse()
-
 	logger.Println("Subtitle translate helper")
-	logger.Println(" config file : ", *configPath)
 
 	internal.InitConfig(*configPath)
+
+	if *cleanup {
+		internal.CleanUp()
+		return
+	} else {
+		runScript(configPath)
+	}
+
+}
+
+func runScript(configPath *string) {
+	logger.Println(" config file : ", *configPath)
 
 	internal.StartTranslatorService()
 
