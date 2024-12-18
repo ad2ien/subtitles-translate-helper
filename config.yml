@@ -1,0 +1,11 @@
+input:
+  path: "english"
+  lang: "en"
+
+output:
+  path: "french"
+  lang: "fr"
+
+ignoreSubStartingWithChar: "♪"
+libreTranslateServicePort: 5021
+libreTranslateImageVersion: "latest"
