@@ -86,12 +86,12 @@ func translateSentence(subtitle string) string {
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusOK {
-		logger.Printf("%d %s", response.StatusCode)
+		logger.Printf("%d ", response.StatusCode)
 		body, err := io.ReadAll(response.Body)
 		if err != nil {
 			logger.Println(err)
 		} else {
-			logger.Println(string(body))
+			logger.Print(string(body))
 		}
 		return "## Translation error service error"
 	}
