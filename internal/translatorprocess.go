@@ -5,6 +5,7 @@ import (
 	"io"
 	"os"
 	"os/exec"
+	"time"
 
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
@@ -24,6 +25,8 @@ func StartTranslatorService() {
 	}
 
 	runService()
+
+	time.Sleep(time.Second * 5)
 
 }
 
@@ -70,7 +73,7 @@ func runService() {
 				"lt-db":    {},
 				"lt-local": {},
 			},
-			Env: []string{langEnv},
+			Env: []string{"LT_LOAD_ONLY=" + langEnv},
 		},
 		&container.HostConfig{
 			PortBindings: portBinding,

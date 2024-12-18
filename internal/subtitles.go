@@ -3,6 +3,7 @@ package internal
 import (
 	"bytes"
 	"encoding/json"
+	"io"
 	"net/http"
 	"regexp"
 	"strings"
@@ -85,7 +86,13 @@ func translateSentence(subtitle string) string {
 	defer response.Body.Close()
 
 	if response.StatusCode != http.StatusOK {
-		logger.Printf("%d %s", response.StatusCode, response.Body)
+		logger.Printf("%d %s", response.StatusCode)
+		body, err := io.ReadAll(response.Body)
+		if err != nil {
+			logger.Println(err)
+		} else {
+			logger.Println(string(body))
+		}
 		return "## Translation error service error"
 	}
 
