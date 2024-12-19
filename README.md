@@ -1,6 +1,12 @@
 # Subtitle translate helper
 
-A Go tool to translate subtiles using [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate)
+[![CI status](https://img.shields.io/github/actions/workflow/status/ad2ien/subtitles-translate-helper/ci.yml?label=CI&logo=github)](https://github.com/ad2ien/subtitles-translate-helper/actions)
+![GoLand](https://img.shields.io/badge/GoLand-0f0f0f?&logo=goland&logoColor=white)
+![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?logo=docker&logoColor=white)
+[![Gitmoji](https://img.shields.io/badge/gitmoji-%20😜%20😍-FFDD67.svg)](https://gitmoji.dev)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
+A Go tool to translate SRT subtiles using [LibreTranslate](https://github.com/LibreTranslate/LibreTranslate)
 
 ## Prerequisites
 
@@ -51,16 +57,8 @@ chmod +x subtitles-translate-helper
 go run cmd/subtranshelper/main.go 
 ```
 
-## Clean volumes
+## Clean volumes and image
 
-...
-
-## todo
-
-- [ ] check without the image in the first place
-- [ ] specify subtitle format
-- [ ] Version
-- [ ] CI:
-  - downloadable last artefact
-  - lint?
-- [ ] Badgess
+```sh
+./subtitles-translate-helper --cleanup
+```
